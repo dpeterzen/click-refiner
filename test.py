@@ -1,5 +1,9 @@
 """
-Example script for validating the efficacy of click-refiner general purpose CLICK accuracy improvement for AIvision models
+Example script for validating the efficacy of click-refiner general purpose CLICK accuracy improvement for AI vision models
+
+When I presented the goal and screenshot below to gpt4v and asked where to click, it responded (x: 50%, y: 39%).
+
+Let's see if we can refine this~!
 """
 
 import os
@@ -12,23 +16,20 @@ client = OpenAI()
 client.api_key = os.getenv("OPENAI_API_KEY")
 client.base_url = os.getenv("OPENAI_API_BASE_URL", client.base_url)
 
-"""
-Goal: from the starting point of the screenshot in the screenshots folder, 
-    what is the next best action to take with the goal of getting the price of bitcoin.
+# 0,0 is top left corner
+objective = "Find the price of bitcoin" #  given the current state of my computer (see screenshot)"
+previous_action = ""
+proposed_click_x = 50
+proposed_click_y = 39
+description = "Click: Google Search field" # aka target
+reason = "This will allow me to search for a banana"
+screenshot = "screenshots/screenshot.png"
+number_of_iterations = 1
 
-(1) Load the screenshot
-(2) Use the model to predict the next best action
-(3) Take the action
-(4) Repeat until the goal is achieved
+VISION_PROMPT = f"""
+Given the screenshot and goal: "{objective}"
 
-(note: multiple actions are out of scope of the click-refiner library, 
-    so in this context an acceptable next best action is a single click,
-    such as clicking in the browser navigation bar or the google search box)
-"""
+Where should I click to "{description}"? Why? "{reason}"
 
-"""
-When I presented this goal and the screenshot to gpt4 and asked for the next best action, 
-it gave the following response: (x: 50%, y: 39%).
-
-Let's see if we can refine this~!
+Please provide the x, y coordinates as a fraction out of 100%
 """
